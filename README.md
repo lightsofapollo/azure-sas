@@ -5,6 +5,15 @@ Azure Shared Access Signature Signing (for node.js).
 The goal is to provide a way to grant access keys to your azure resources
 (like querying a table from the browser) with a very small footprint.
 
+## Configuration
+
+Like the node azure client(s) the credentials are taken from environment variables by default:
+
+  - `AZURE_STORAGE_ACCOUNT` : used in the "resource" parameter
+  - `AZURE_STORAGE_ACCESS_KEY` : used to generate `sig` query parameter and sign the other params
+
+See the [azure docs](http://msdn.microsoft.com/en-us/library/windowsazure/ee395415.aspx) for more details
+
 ## Usage
 
 The [tests](/sas_test.js) are written in an end-to-end style see them
@@ -43,3 +52,8 @@ superagent.get('https://mytable.table.core.windows.net/mytable()').
     var json = result.res.body;
   });
 ```
+
+### TODO
+
+  - add SAS signing for blobs
+  - add SAS signing for queue
