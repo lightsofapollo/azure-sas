@@ -108,11 +108,6 @@ Shared access signature for azure services.
 @param {String} [options.signedexpiry] signed expiry time.
 @param {String} [options.signedpermissions=r] permissions to use (like r)
 @param {String} [options.signedidentifier] use a predefined permission rule stored at the resource level.
-@param {String} [options.cachecontrol] cache control header override.
-@param {String} [options.contentdisposition] content disposition override.
-@param {String} [options.contentlanguage] content language override.
-@param {String} [options.contentencoding] content encoding override.
-@param {String} [options.contenttype] content type override.
 */
 function table(options) {
   // fill in the default options

@@ -1,7 +1,7 @@
 suite('sas', function() {
   var subject = require('./sas');
   var azure = require('azure');
-  var tableName = 'Supertable';
+  var tableName = 'SuperTableWoot';
   var request = require('superagent-promise');
   var tableService;
 
@@ -25,8 +25,7 @@ suite('sas', function() {
 
     test('query a table', function() {
       // read some table data.
-      var url = 'https://' + tableService.host + '/' + tableName;
-      url += "(PartitionKey='hometasks', RowKey='xfoo')";
+      var url = 'https://' + tableService.host + '/' + tableName + '()';
 
       var params = subject.table({
         signedpermissions: 'r',
@@ -35,11 +34,12 @@ suite('sas', function() {
       });
 
       var req = request('GET', url).query(params);
-      req.set('Accept', 'application/json;odata=nometadata');
-      req.set('x-ms-version', '2013-08-15');
+      req.set('Accept', 'application/json;odata=fullmetadata');
+      req.query('$filter', '(PartitionKey eq "hometasks" and RowKey eq "1")');
+      req.query('$top', '1');
 
       return req.end().then(function(result) {
-        var body = result.res.body;
+        var body = result.res.body.value[0];
 
         assert.equal(body.PartitionKey, task.PartitionKey);
         assert.equal(body.RowKey, task.RowKey);

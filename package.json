@@ -1,15 +1,22 @@
 {
-  "name": "azure-tables",
-  "version": "0.0.0",
-  "description": "Azure tables",
-  "main": "index.js",
+  "name": "azure-sas",
+  "version": "0.0.1",
+  "description": "Azure Shared Access Signature generation.",
+  "main": "sas.js",
   "scripts": {
     "test": "make test"
   },
-  "author": "",
+  "author": "James Lal [:lightsofapollo]",
   "license": "MIT",
   "dependencies": {
   },
+  "keywords": [
+    "azure",
+    "sign",
+    "azure table",
+    "table",
+    "shared access signature"
+  ],
   "devDependencies": {
     "azure": "~0.8.1",
     "mocha": "~1.17.1",
