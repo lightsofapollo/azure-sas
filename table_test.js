@@ -24,7 +24,7 @@ suite('table', function() {
     });
 
     test('query a table', function() {
-      // read some table data.
+       //read some table data.
       var now = new Date().toUTCString();
       var url = 'https://' + tableService.host + '/' + tableName + '()';
       var req = request('GET', url);

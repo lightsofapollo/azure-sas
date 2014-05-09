@@ -1,6 +1,6 @@
-# azure-sas
+# azure-sign
 
-Azure Shared Access Signature Signing (for node.js).
+Azure signing utilities for node (just table service right now)
 
 The goal is to provide a way to grant access keys to your azure resources
 (like querying a table from the browser) with a very small footprint.
@@ -16,18 +16,20 @@ See the [azure docs](http://msdn.microsoft.com/en-us/library/windowsazure/ee3954
 
 ## Usage
 
-The [tests](/sas_test.js) are written in an end-to-end style see them
+The [tests](/*_test.js) are written in an end-to-end style see them
 for actual usage (making calls to azure)
 
+### sas
+
 ```js
-var sas = require('azure-sas');
+var signTable = require('azure-sign/table');
 
 var expires = new Date();
 // good for an hour
 expires.setHours(expires.getHours() + 1);
 
 // sign a table resource
-var queryParams = sas.table({
+var queryParams = table.sas({
   // this must be lowercase even if your table is uppercase, etc...
   resource: 'tablename',
 
@@ -53,7 +55,40 @@ superagent.get('https://mytable.table.core.windows.net/mytable()').
   });
 ```
 
-### TODO
+### sharedKey
+
+```js
+var superagent = requrie('superagent');
+
+var now = new Date().toUTCString();
+var url = 'https://' + tableService.host + '/' + tableName + '()';
+var req = superagent('GET', url);
+
+// These are all required headers
+req.set('Content-Type', 'application/json');
+req.set('Date', now)
+req.set('x-ms-date', now)
+req.set('x-ms-version', '2013-08-15');
+
+var headers = {
+  'Content-Type': req.get('Content-Type'),
+  'Date': req.get('Date')
+};
+
+var signed = subject.sharedKey({
+  method: req.method,
+  headers: headers,
+  resource: tableName + '()'
+});
+
+req.set('Authorization', signed);
+
+// now your request is authenticated go for it!
+// ... yay
+
+```
+
+## TODO
 
   - add SAS signing for blobs
   - add SAS signing for queue
