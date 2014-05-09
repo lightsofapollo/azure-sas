@@ -1,5 +1,5 @@
-suite('sas', function() {
-  var subject = require('./sas');
+suite('table', function() {
+  var subject = require('./table');
   var azure = require('azure');
   var tableName = 'SuperTableWoot';
   var request = require('superagent-promise');
@@ -27,7 +27,7 @@ suite('sas', function() {
       // read some table data.
       var url = 'https://' + tableService.host + '/' + tableName + '()';
 
-      var params = subject.table({
+      var params = subject.sas({
         signedpermissions: 'r',
         resource: tableName.toLowerCase(),
         signedexpiry: new Date(Date.now() + 60 * 1000)

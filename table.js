@@ -3,7 +3,7 @@ Shared access signatures based on this document:
 
 http://msdn.microsoft.com/en-us/library/windowsazure/dn140256.aspx
 */
-var crypto = require('crypto');
+var sign = require('./sign');
 var assert = require('assert');
 var util = require('util');
 
@@ -32,19 +32,6 @@ var DEFAULT_OPTIONS = {
   accesskey: process.env.AZURE_STORAGE_ACCESS_KEY,
   account: process.env.AZURE_STORAGE_ACCOUNT
 };
-
-/**
-Azure verifies much of what we send it by checking the input vs a signed version of the input.
-
-The value is signed with a sha256 algorithm and the key is the base64 decoded value of access key.
-*/
-function sign(accessKey, value) {
-  // start by decoding the access key
-  var decodedKey = new Buffer(accessKey, 'base64');
-
-  // encrypt the value and encode it with base64
-  return crypto.createHmac('sha256', decodedKey).update(value).digest('base64');
-}
 
 function newlineValue(value) {
   // intentional use of == null (null or undefined value)
@@ -109,7 +96,7 @@ Shared access signature for azure services.
 @param {String} [options.signedpermissions=r] permissions to use (like r)
 @param {String} [options.signedidentifier] use a predefined permission rule stored at the resource level.
 */
-function table(options) {
+function sas(options) {
   // fill in the default options
   assert(options.resource, 'resource must be given');
   formatOptions(options);
@@ -138,4 +125,4 @@ function table(options) {
   return queryParams;
 }
 
-module.exports.table = table;
+module.exports.sas = sas;
