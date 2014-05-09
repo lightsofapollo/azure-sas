@@ -21,7 +21,7 @@
     "azure": "~0.8.1",
     "mocha": "~1.17.1",
     "promise": "~4.0.0",
-    "superagent": "~0.16.0",
+    "superagent": "~0.18.0",
     "superagent-promise": "0.0.0"
   }
 }

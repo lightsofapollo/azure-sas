@@ -88,7 +88,7 @@ Shared access signature for azure services.
 @param {Object} options for signing.
 @param {String} options.resource for signing.
 @param {String} [options.account=process.env.AZURE_STORAGE_ACCOUNT]
-@param {String} [options.accesskey=process.env.AZURE_STORAGE_ACCOUNT] for storage services.
+@param {String} [options.accesskey=process.env.AZURE_STORAGE_ACCESS_KEY] for storage services.
 @param {String} [options.signedversion=2012-02-12]
 @param {String} [options.tablename] specific table name that is allowed (for Table only)
 @param {String} [options.signedstart] signed start time.
@@ -125,4 +125,32 @@ function sas(options) {
   return queryParams;
 }
 
+/**
+Build an authorization scheme based on the options for SharedKey.
+
+@param {Object} options for signing.
+@param {String} options.method for the signing.
+@param {String} options.resource for signing.
+@param {Object} options.headers for the http request.
+@param {String} [options.account=process.env.AZURE_STORAGE_ACCOUNT]
+@param {String} [options.accesskey=process.env.AZURE_STORAGE_ACCESS_KEY] for storage services.
+*/
+function sharedKey(options) {
+  var accessKey = options.accesskey || DEFAULT_OPTIONS.accesskey;
+  var account = options.account || DEFAULT_OPTIONS.account;
+
+  // http://msdn.microsoft.com/en-us/library/azure/dd179428.aspx
+  var stringToSign = '';
+
+  stringToSign += newlineValue(options.method);
+  stringToSign += newlineValue(options.headers['Content-MD5']);
+  stringToSign += newlineValue(options.headers['Content-Type']);
+  stringToSign += newlineValue(options.headers['x-ms-date'] || options.headers['Date']);
+  stringToSign += '/' + account + '/' + options.resource;
+
+  var sig = sign(accessKey, stringToSign);
+  return 'SharedKey ' + account + ':' + sig;
+}
+
+module.exports.sharedKey = sharedKey;
 module.exports.sas = sas;
