@@ -59,6 +59,7 @@ superagent.get('https://mytable.table.core.windows.net/mytable()').
 
 ```js
 var superagent = requrie('superagent');
+var signTable = require('azure-sign/table');
 
 var now = new Date().toUTCString();
 var url = 'https://' + tableService.host + '/' + tableName + '()';
@@ -75,7 +76,7 @@ var headers = {
   'Date': req.get('Date')
 };
 
-var signed = subject.sharedKey({
+var signed = signTable.sharedKey({
   method: req.method,
   headers: headers,
   resource: tableName + '()'
